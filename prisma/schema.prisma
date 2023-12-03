@@ -1,0 +1,392 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // provider = "sqlite"
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Employees {
+  id                       String              @id @default(uuid())
+  name                     String
+  tel                      String
+  email                    String
+  cpf                      String
+  position_in_construction String?
+  equipments               Equipments[]
+  employeeFiles            EmployeeFiles[]
+  construction             Constructions?      @relation(fields: [construction_id], references: [id])
+  construction_id          String?
+  modification_record      ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id   String?
+  created_at               DateTime            @default(now())
+  update_at                DateTime            @updatedAt
+
+  @@map("employees")
+}
+
+model EmployeeFiles {
+  id                     String              @id @default(uuid())
+  file_name              String
+  employee               Employees?          @relation(fields: [employee_id], references: [id])
+  employee_id            String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("employeesFiles")
+}
+
+model Equipments {
+  id                     String              @id @default(uuid())
+  name                   String
+  responsible            String
+  type_equipment         String
+  imageEquipment         ImageEquipment[]
+  construction           Constructions?      @relation(fields: [construction_id], references: [id])
+  construction_id        String?
+  employee               Employees?          @relation(fields: [employee_id], references: [id])
+  employee_id            String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("equipments")
+}
+
+model ImageEquipment {
+  id                     String              @id @default(uuid())
+  file_name              String
+  equipment              Equipments?         @relation(fields: [equipment_id], references: [id])
+  equipment_id           String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("imageEquipment")
+}
+
+model Suppliers {
+  id                     String              @id @default(uuid())
+  name                   String
+  corporate_reason       String
+  cnpj                   String
+  city                   String
+  uf                     String
+  street                 String
+  number                 String
+  neighborhood           String
+  cep                    String
+  email                  String
+  type                   String
+  tel                    String
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("suppliers")
+}
+
+model Constructions {
+  id                     String              @id @default(uuid())
+  name                   String
+  city                   String
+  uf                     String
+  street                 String
+  number                 String
+  neighborhood           String
+  cep                    String
+  latitude               String?
+  longitude              String?
+  start_date             String
+  end_date               String
+  total_value_work       String
+  amount_received        String
+  amount_spent           String
+  comments               String?
+  financial              Financial[]
+  docsConstruction       DocsConstruction[]
+  employees              Employees[]
+  equipments             Equipments[]
+  client                 Clients?            @relation(fields: [client_id], references: [id])
+  client_id              String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  stats                  Int?                @default(0)
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("constructions")
+}
+
+model DocsConstruction {
+  id                     String              @id @default(uuid())
+  file_name              String
+  released_customer      Boolean             @default(false)
+  construction           Constructions?      @relation(fields: [construction_id], references: [id])
+  construction_id        String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("docsConstruction")
+}
+
+model ClientAlert {
+  id                     String              @id @default(uuid())
+  type                   String
+  description            String
+  title                  String
+  view                   Boolean?            @default(false)
+  client                 Clients?            @relation(fields: [client_id], references: [id])
+  client_id              String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("clientAlert")
+}
+
+model Clients {
+  id                     String              @id @default(uuid())
+  name                   String
+  corporate_reason       String
+  email                  String
+  tel                    String
+  secondary_tel          String?
+  cpf_cnpj               String
+  secondary_email        String?
+  password               String
+  city                   String
+  uf                     String
+  street                 String
+  number                 String
+  neighborhood           String
+  cep                    String
+  construction           Constructions[]
+  docsClient             DocsClient[]
+  clientAlert            ClientAlert[]
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  RefreshTokenClient     RefreshTokenClient?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("clients")
+}
+
+model DocsClient {
+  id                     String              @id @default(uuid())
+  file_name              String
+  released_customer      Boolean             @default(false)
+  client                 Clients?            @relation(fields: [client_id], references: [id])
+  client_id              String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("docsClient")
+}
+
+model ModificationRecord {
+  id                  String              @id @default(uuid())
+  users               Users?              @relation(fields: [user_id], references: [id])
+  user_id             String?
+  employees           Employees[]
+  employee_files      EmployeeFiles[]
+  equipments          Equipments[]
+  image_equipment     ImageEquipment[]
+  suppliers           Suppliers[]
+  constructions       Constructions[]
+  docs_Construction   DocsConstruction[]
+  client_alert        ClientAlert[]
+  clients             Clients[]
+  docs_client         DocsClient[]
+  possible_customers  PossibleCustomers[]
+  financial           Financial[]
+  proof_expense_files ProofExpenseFiles[]
+  send_emails         SendEmail[]
+  created_at          DateTime            @default(now())
+  update_at           DateTime            @updatedAt
+
+  @@map("modificationRecord")
+}
+
+model Users {
+  id                  String               @id @default(uuid())
+  master              Boolean              @default(false)
+  email               String
+  name                String
+  password            String
+  tel                 String
+  token               String               @default("")
+  refresh_token_admin RefreshTokenAdmin?
+  modification_record ModificationRecord[]
+  created_at          DateTime             @default(now())
+  update_at           DateTime             @updatedAt
+
+  @@map("users")
+}
+
+model PossibleCustomers {
+  id                              String                         @id @default(uuid())
+  interested                      String
+  fantasy_name                    String?
+  size_company                    String?
+  legal_nature                    String?
+  public_place                    String
+  number                          String
+  complement                      String?
+  neighborhood                    String
+  city                            String
+  uf                              String
+  cep                             String?
+  cpf_cnpj                        String
+  tel                             String?
+  email                           String?
+  date_issue                      String
+  type                            String
+  validity                        String
+  deadline_expire                 String
+  situation                       Boolean
+  responsible_contact             String?
+  contact_name                    String?
+  contact_situation               String?
+  contact_date                    String?
+  contact_time                    String?
+  comments                        String?
+  opening                         String?
+  in_activity                     String?
+  type_company                    String?
+  status_company                  String?
+  date_situation                  String?
+  last_update                     String?
+  efr                             String?
+  reason_situation                String?
+  special_situation               String?
+  special_situation_date          String?
+  share_capital                   String?
+  send_email                      Boolean                        @default(false)
+  customer_feedback               Boolean                        @default(false)
+  possible_customer_main_activity PossibleCustomerMainActivity[]
+  possible_customer_QSA           PossibleCustomerQSA[]
+  modification_record             ModificationRecord?            @relation(fields: [modification_record_id], references: [id])
+  modification_record_id          String?
+  created_at                      DateTime                       @default(now())
+  update_at                       DateTime                       @updatedAt
+
+  @@map("possibleCustomers")
+}
+
+model PossibleCustomerMainActivity {
+  id                   String             @id @default(uuid())
+  code                 String
+  text                 String
+  possible_customer    PossibleCustomers? @relation(fields: [possible_customer_id], references: [id])
+  possible_customer_id String?
+  created_at           DateTime           @default(now())
+  update_at            DateTime           @updatedAt
+
+  @@map("possibleCustomerMainActivity")
+}
+
+model PossibleCustomerQSA {
+  id                   String             @id @default(uuid())
+  name                 String
+  qual                 String
+  possible_customer    PossibleCustomers? @relation(fields: [possible_customer_id], references: [id])
+  possible_customer_id String?
+  created_at           DateTime           @default(now())
+  update_at            DateTime           @updatedAt
+
+  @@map("possibleCustomerQSA")
+}
+
+model PossibleCustomersTemporary {
+  id               String   @id @default(uuid())
+  cnpj             String
+  type             String
+  date_issue       String
+  comments         String?
+  validity         String
+  deadline_expire  String
+  situation        Boolean
+  search_performed Boolean  @default(false)
+  created_at       DateTime @default(now())
+  update_at        DateTime @updatedAt
+
+  @@map("possibleCustomerTemporary")
+}
+
+model Financial {
+  id                     String              @id @default(uuid())
+  description            String
+  expense_classification String
+  date_receipt           String
+  value_computed         String
+  nfe_nfce               String
+  payment_methods        String
+  comments               String?
+  proof_expense_files    ProofExpenseFiles[]
+  constructions          Constructions?      @relation(fields: [constructions_id], references: [id])
+  constructions_id       String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("financial")
+}
+
+model ProofExpenseFiles {
+  id                     String              @id @default(uuid())
+  file_name              String
+  financial              Financial?          @relation(fields: [financial_id], references: [id])
+  financial_id           String?
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("proofExpenseFiles")
+}
+
+model SendEmail {
+  id                     String              @id @default(uuid())
+  sender                 String
+  recipient              String
+  modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
+  modification_record_id String?
+  created_at             DateTime            @default(now())
+  update_at              DateTime            @updatedAt
+
+  @@map("sendEmail")
+}
+
+model RefreshTokenAdmin {
+  id        String @id @default(uuid())
+  expiresIn Int
+  admin     Users  @relation(fields: [user_id], references: [id])
+  user_id   String @unique
+
+  @@map("refreshTokenAdmin")
+}
+
+model RefreshTokenClient {
+  id        String  @id @default(uuid())
+  expiresIn Int
+  client    Clients @relation(fields: [client_id], references: [id])
+  client_id String  @unique
+
+  @@map("refreshTokenClient")
+}
