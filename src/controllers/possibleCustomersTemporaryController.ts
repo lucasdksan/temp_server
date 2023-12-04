@@ -8,7 +8,11 @@ export default class PossibleCustomersTemporaryController{
             const body = req.body;
             const possibleCustomersTemporaryModel = new PossibleCustomersTemporaryModel();
             
-            await possibleCustomersTemporaryModel.process(body);
+            const { notSaved, saved } = await possibleCustomersTemporaryModel.process(body);
+
+            if(notSaved && notSaved.length > 0) {
+                return res.json({ message: "prospecting completed! However, some data could not be saved", notSaved, saved:possibleCustomersTemporaryViewMany(saved) }).status(200);
+            }
 
             return res.json({ message: "prospecting completed!" }).status(200);
         } catch (error) {

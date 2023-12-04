@@ -5,8 +5,12 @@ export default class ProspectingController {
     async start(req: Request, res: Response){
         try {
             const prospectingModel = new ProspectingModel();
-            await prospectingModel.process();
+            const { errors, processedClients } = await prospectingModel.process();
 
+            if(errors && errors.length > 0) {
+                return res.json({ message: "prospecting completed! However, some data could not be saved", errors, processedClients }).status(200);
+            }
+            
             return res.json({ message: "prospecting completed!" }).status(200);
         } catch (error) {
             return res.json({ error }).status(500);

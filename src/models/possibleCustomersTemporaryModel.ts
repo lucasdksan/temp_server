@@ -1,16 +1,31 @@
+import { PossibleCustomersTemporary } from "@prisma/client";
 import { prisma } from "../prisma";
 import { possible_customers_temporary } from "../zod/possible_customers_temporary";
 
 export default class PossibleCustomersTemporaryModel {
-    async process(body: any){
-        if(!body) throw Error("Invalid Data");
+    async process(body: any[]): Promise<{ saved: PossibleCustomersTemporary[]; notSaved: any[] }> {
+        if (!body || !Array.isArray(body) || body.length === 0) {
+            throw Error("Invalid Data");
+        }
 
-        const data = possible_customers_temporary.parse(body);
-        const resultCreate = await prisma.possibleCustomersTemporary.create({ data });
+        const saved: PossibleCustomersTemporary[] = [];
+        const notSaved: any[] = [];
 
-        if(!resultCreate) throw Error("Invalid Data");
+        for (const item of body) {
+            try {
+                const data = possible_customers_temporary.parse(item);
+                const resultCreate = await prisma.possibleCustomersTemporary.create({ data });
+                saved.push(resultCreate);
+            } catch (error) {
+                notSaved.push({ item, error });
+            }
+        }
 
-        return resultCreate;
+        if (notSaved.length > 0) {
+            throw Error(`Some items failed to save: ${JSON.stringify(notSaved)}`);
+        }
+
+        return { saved, notSaved };
     }
 
     async list(){
