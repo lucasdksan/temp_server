@@ -3,16 +3,19 @@ import ProspectingController from "./controllers/prospectingController";
 import PossibleCustomersTemporaryController from "./controllers/possibleCustomersTemporaryController";
 import PossibleCustomersController from "./controllers/possibleCustomersController";
 import SearchController from "./controllers/searchController";
+import FilterController from "./controllers/filterController";
 
 const routes = express.Router();
 const prospectingController = new ProspectingController();
 const possibleCustomersTemporaryController = new PossibleCustomersTemporaryController();
 const possibleCustomersController = new PossibleCustomersController();
 const searchController = new SearchController();
+const filterController = new FilterController();
 
 routes.post("/possible_customers_temporary", possibleCustomersTemporaryController.create);
 routes.post("/possible_customers", possibleCustomersController.create);
 routes.post("/search", searchController.search);
+routes.post("/filter", filterController.filter);
 
 routes.get("/prospecting", prospectingController.start);
 routes.get("/possible_customers_temporary/list", possibleCustomersTemporaryController.list);

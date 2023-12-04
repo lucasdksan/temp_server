@@ -17,12 +17,12 @@ export default class ProspectingModel {
         const filteredClients = client_list.filter(client => !client.search_performed);
 
         const processClient = async (client: any) => {
-            const { docRegex, isError } = validationDoc(client.cnpj);
+            let { docRegex, isError } = validationDoc(client.cnpj);
 
             if (client.search_performed) errors.push(client);
-            if(!isError) errors.push(client);
+            if (!isError) errors.push(client);
 
-            const result = await singleRequest(docRegex);
+            let result = await singleRequest(docRegex);
 
             return result;
         };
@@ -32,49 +32,57 @@ export default class ProspectingModel {
             const sendingData: any[] = [];
 
             for (const client of filteredClients) {
-                const result = await processClient(client);
-                const resultFormated = formatDataStartPossibleCustomers(client, result);
-
-                const client_save = await prisma.possibleCustomers.create({
-                    data: resultFormated
+                let validation_client = await prisma.possibleCustomers.findFirst({
+                    where: {
+                        cpf_cnpj: client.cnpj
+                    }
                 });
 
-                if(client_save) {
-                    await prisma.possibleCustomersTemporary.update({
-                        where: { id: client.id },
-                        data: { search_performed: true }
+                if (!validation_client) {
+                    let result = await processClient(client);
+                    let resultFormated = formatDataStartPossibleCustomers(client, result);
+
+                    let client_save = await prisma.possibleCustomers.create({
+                        data: resultFormated
                     });
 
-                    if(result.qsa) {
-                        result.qsa.forEach(async (element: { qual: string, nome: string }) => {
-                            await prisma.possibleCustomerQSA.create({
-                                data: {
-                                    name: element.nome,
-                                    qual: element.qual,
-                                    possible_customer_id: client_save.id
-                                }
-                            });
+                    if (client_save) {
+                        await prisma.possibleCustomersTemporary.update({
+                            where: { id: client.id },
+                            data: { search_performed: true }
                         });
+
+                        if (result.qsa) {
+                            result.qsa.forEach(async (element: { qual: string, nome: string }) => {
+                                await prisma.possibleCustomerQSA.create({
+                                    data: {
+                                        name: element.nome,
+                                        qual: element.qual,
+                                        possible_customer_id: client_save.id
+                                    }
+                                });
+                            });
+                        }
+
+                        if (result.atividade_principal) {
+                            result.atividade_principal.forEach(async (element: { code: string, text: string }) => {
+                                await prisma.possibleCustomerMainActivity.create({
+                                    data: {
+                                        code: element.code,
+                                        text: element.text,
+                                        possible_customer_id: client_save.id
+                                    }
+                                });
+                            });
+                        }
+                    } else {
+                        errors.push(client);
                     }
 
-                    if(result.atividade_principal){
-                        result.atividade_principal.forEach(async (element: { code: string, text: string }) => {
-                            await prisma.possibleCustomerMainActivity.create({
-                                data: {
-                                    code: element.code,
-                                    text: element.text,
-                                    possible_customer_id: client_save.id
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    errors.push(client);
+                    sendingData.push(client_save)
+
+                    await delay(timeInterval);
                 }
-
-                sendingData.push(client_save)
-
-                await delay(timeInterval);
             }
 
             return sendingData;
