@@ -29,7 +29,7 @@ export default class PossibleCustomersController {
 
     async update(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
             const body = req.body;
             const possibleCustomersModel = new PossibleCustomersModel();
 
@@ -43,7 +43,7 @@ export default class PossibleCustomersController {
 
     async index(req: Request, res: Response) {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
             const possibleCustomersModel = new PossibleCustomersModel();
             const result = await possibleCustomersModel.get(id);
 
@@ -55,7 +55,7 @@ export default class PossibleCustomersController {
 
     async delete(req: Request, res: Response) {
         try {   
-            const { id } = req.params;
+            const { id } = req.query;
             const possibleCustomersModel = new PossibleCustomersModel();
 
             await possibleCustomersModel.remove(id);

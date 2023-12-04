@@ -23,7 +23,7 @@ export default class PossibleCustomersModel {
         return list;
     }
 
-    async updata(id: string | null, body: any){
+    async updata(id: any, body: any){
         if(!id) throw Error("Possible Customers error");
         if(!body) throw Error("Possible Customers error");
 
@@ -37,7 +37,7 @@ export default class PossibleCustomersModel {
         return resultUpdate;
     }
 
-    async get(id: string | null){
+    async get(id: any){
         if(!id) throw Error("Error in Possible Customers search: Possible Customers does not exist");
 
         const resultSearch = await prisma.possibleCustomers.findUnique({
@@ -50,7 +50,7 @@ export default class PossibleCustomersModel {
         return resultSearch;
     }
 
-    async remove(id: string | null){
+    async remove(id: any){
         if(!id) throw Error("Error removing Possible Customers: Possible Customers does not exist");
 
         const resultDelete = await prisma.possibleCustomers.delete({
