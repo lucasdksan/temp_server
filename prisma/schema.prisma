@@ -365,6 +365,7 @@ model SendEmail {
   id                     String              @id @default(uuid())
   sender                 String
   recipient              String
+  theme                  String
   modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
   modification_record_id String?
   created_at             DateTime            @default(now())

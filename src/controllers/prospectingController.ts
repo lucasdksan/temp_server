@@ -16,4 +16,16 @@ export default class ProspectingController {
             return res.json({ error }).status(500);
         }
     }
+
+    async startUnique(req: Request, res: Response){
+        try {
+            const { cnpj } = req.query;
+            const prospectingModel = new ProspectingModel();
+            const result = await prospectingModel.processUnique(cnpj);
+            
+            return res.json(result).status(200);
+        } catch (error) {
+            return res.json({ error }).status(500);
+        }
+    }
 }

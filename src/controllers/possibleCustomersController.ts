@@ -65,4 +65,19 @@ export default class PossibleCustomersController {
             return res.json({ error }).status(500);
         }
     }
+
+    async storeLargeData(req: Request, res: Response){
+        try {
+            const body = req.body;
+            const possibleCustomersModel = new PossibleCustomersModel();
+
+            const result = await possibleCustomersModel.stock(body);
+
+            if(result) return res.json({ message: "Client Registed!" }).status(200);
+
+            return res.json({ message: "Falha ao armazenar os dados" }).status(500);
+        } catch (error) {
+            return res.json({ error }).status(500);
+        }
+    }
 }

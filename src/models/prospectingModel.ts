@@ -2,6 +2,7 @@ import { formatDataStartPossibleCustomers } from "../libs/formatDataStartPossibl
 import { singleRequest } from "../libs/singleRequest";
 import validationDoc from "../libs/validationDoc";
 import { prisma } from "../prisma";
+import { formatDataStartPossibleCustomer } from "../libs/formatDataStartPossibleCustomer";
 
 export default class ProspectingModel {
     async process() {
@@ -91,5 +92,27 @@ export default class ProspectingModel {
         const processedClients = await startProcessing();
 
         return { processedClients, errors };
+    }
+
+    async processUnique(cnpj: any){
+        if(!cnpj) throw Error("Cnpj Invalido");
+        if(typeof cnpj !== "string") throw Error("Cnpj Invalido");
+
+        const result = await singleRequest(cnpj);
+        const possible_customer_main_activity = result.atividade_principal[0];
+        const possible_customer_QSA: {}[]= [];
+        
+        result.qsa.forEach((element:{ qual: string; nome: string }) => {
+            possible_customer_QSA.push({ name: element.nome, qual: element.qual });
+        });
+
+        if(!result) throw Error("Cnpj Invalido");
+
+        const formatResult = formatDataStartPossibleCustomer(result);
+        return { 
+            possible_customer_main_activity,
+            possible_customer_QSA: possible_customer_QSA,
+            ...formatResult
+        };
     }
 }

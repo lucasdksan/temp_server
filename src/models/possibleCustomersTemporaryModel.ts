@@ -11,10 +11,19 @@ export default class PossibleCustomersTemporaryModel {
         const saved: PossibleCustomersTemporary[] = [];
         const notSaved: any[] = [];
 
-        for (const item of body) {
+        for (let item of body) {
             try {
-                const data = possible_customers_temporary.parse(item);
-                const resultCreate = await prisma.possibleCustomersTemporary.create({ data });
+                let data = possible_customers_temporary.parse(item);
+                let { cnpj: tempCnpj } = data;
+                let existClient = await prisma.possibleCustomersTemporary.findFirst({
+                    where: {
+                        cnpj: tempCnpj
+                    }
+                });
+
+                if(existClient) throw Error("Client exist");
+
+                let resultCreate = await prisma.possibleCustomersTemporary.create({ data });
                 saved.push(resultCreate);
             } catch (error) {
                 notSaved.push({ item, error });
@@ -33,6 +42,10 @@ export default class PossibleCustomersTemporaryModel {
 
         if(!list) throw Error("Error Returning the List");
 
-        return list;
+        const list_filted = list.filter(
+            (client) => !client.search_performed
+        );
+
+        return list_filted;
     }
 }
