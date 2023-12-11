@@ -5,6 +5,7 @@ import PossibleCustomersController from "./controllers/possibleCustomersControll
 import SearchController from "./controllers/searchController";
 import FilterController from "./controllers/filterController";
 import MailerController from "./controllers/mailerController";
+import EmailReceivedController from "./controllers/emailReceivedController";
 
 const routes = express.Router();
 const prospectingController = new ProspectingController();
@@ -13,12 +14,14 @@ const possibleCustomersController = new PossibleCustomersController();
 const searchController = new SearchController();
 const filterController = new FilterController();
 const mailerController = new MailerController();
+const emailReceivedController = new EmailReceivedController();
 
 routes.post("/possible_customers_temporary", possibleCustomersTemporaryController.create);
 routes.post("/possible_customers", possibleCustomersController.create);
 routes.post("/possible_customers/storeLargeData", possibleCustomersController.storeLargeData);
 routes.post("/search", searchController.search);
 routes.post("/filter", filterController.filter);
+routes.post("/sendmailer-homepage", emailReceivedController.send);
 
 routes.get("/prospecting", prospectingController.start);
 routes.get("/possible_customers_temporary/list", possibleCustomersTemporaryController.list);

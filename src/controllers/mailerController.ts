@@ -8,9 +8,9 @@ export default class MailerController {
             const mailerModel = new MailerModel()
             const result = await mailerModel.generate(id);
 
-            if(result) return res.json({ message: "Email Enviado!" });
+            if(result) return res.json({ message: "Email Enviado!" }).status(200);
 
-            return res.json({ message: "Falha ao enviar!" });
+            return res.json({ message: "Falha ao enviar!" }).status(500);
         } catch (error) {
             return res.json({ error }).status(500);
         }

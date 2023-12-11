@@ -1,22 +1,27 @@
-export const mailerProspectingTemplate = (name: string, )=>{
+export const mailerProspectingTemplate = (name: string, city: string, uf: string, company: string, type: string)=>{
     return`
-        <p>Caro ${name},</p>
+        <p>${company}</p>
+        <p>${city}/${uf}</p>
 
-        <p>Somos a Silva e Lima, uma empresa dedicada à excelência na construção civil. Com anos de experiência, oferecemos serviços de alta qualidade, inovação e comprometimento com cada projeto.</p>
+        <p>${type} do(a) Sr.(a) ${name}</p>
+        <p>Ref. apresentação comercial de empresa especializadas em projetos.</p>
 
-        <p>Nossos profissionais altamente qualificados trabalham para superar as expectativas dos nossos clientes, garantindo que cada empreendimento seja executado com precisão, dentro do prazo e do orçamento estabelecidos.</p>
+        <p>Prezado(a),</p>
 
-        <p>Oferecemos uma variedade de serviços, incluindo construção residencial, comercial, reformas, gerenciamento de projetos e muito mais. Estamos comprometidos em criar espaços que não apenas atendam às necessidades dos nossos clientes, mas também excedam suas expectativas.</p>
+        <p>É com satisfação que nos apresentamos como uma empresa especializada em projetos de combate a incêndio, dedicada a garantir a segurança e a proteção de seus clientes. Com expertise consolidada, oferecemos soluções personalizadas e inovadoras para prevenção e combate a incêndios.</p>
 
-        <p>Seja qual for o seu projeto, estamos prontos para colaborar e transformar suas ideias em realidade. Entre em contato conosco para uma consulta personalizada e descubra como podemos tornar a sua visão arquitetônica uma verdadeira obra-prima.</p>
+        <p>Nossa equipe altamente qualificada e comprometida é capaz de elaborar projetos detalhados e eficientes, alinhados às normas e regulamentos vigentes, visando à segurança e ao bem-estar de todos os envolvidos. Atuamos com tecnologia de ponta e metodologias atualizadas, garantindo excelência em cada etapa do processo.</p>
 
-        <p>Estamos ansiosos para trabalhar consigo e contribuir para o sucesso do seu próximo empreendimento.</p>
+        <p>Além disso, nos orgulhamos da nossa capacidade de oferecer serviços de consultoria e assessoria, assegurando que nossos clientes tenham total suporte desde o planejamento até a implementação e manutenção dos sistemas de prevenção e combate a incêndio.</p>
+
+        <p>Estamos à disposição para discutir detalhes específicos e apresentar soluções que atendam às necessidades exclusivas de sua organização.</p>
+
+        <p>Podendo realizar contato através desta correspondência ou através do telefone/WhatsApp: (84)4042-0858</p>
 
         <p>Atenciosamente,</p>
-        <p>SL PARTICIPAÇÕES EM SOLUÇÕES TÉCNICAS</p>
+        <p>Bruno Lima</p>
         <p>@slparqt</p>
         <p>Telefone: (84) 4042-0858</p>
         <p>Email: comercial@slparticipacoes.com</p>
-        <p>Website: https://slparticipacoes.com/</p>
     `;
 };
