@@ -331,6 +331,7 @@ model PossibleCustomersTemporary {
 model Financial {
   id                     String              @id @default(uuid())
   description            String
+  description_the_main   String
   expense_classification String
   date_receipt           String
   value_computed         String
@@ -390,4 +391,31 @@ model RefreshTokenClient {
   client_id String  @unique
 
   @@map("refreshTokenClient")
+}
+
+model FormPayment {
+  id         String   @id @default(uuid())
+  type       String
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+
+  @@map("formPayment")
+}
+
+model ClassificationExpenses {
+  id         String   @id @default(uuid())
+  type       String
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+
+  @@map("classificationExpenses")
+}
+
+model DescriptionWorkService {
+  id         String   @id @default(uuid())
+  type       String
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+
+  @@map("descriptionWorkService")
 }
