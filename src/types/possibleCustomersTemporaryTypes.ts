@@ -5,7 +5,6 @@ export type possibleCustomersTemporaryTypes = {
     date_issue: string,
     comments: string | null,
     validity: string,
-    deadline_expire: string,
     situation: boolean,
     search_performed: boolean,
     update_at: Date;

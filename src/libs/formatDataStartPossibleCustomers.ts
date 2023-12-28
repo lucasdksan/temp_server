@@ -17,7 +17,6 @@ export const formatDataStartPossibleCustomers = (client: any, result_search: any
         date_issue: client.date_issue,
         type: client.type,
         validity: client.validity,
-        deadline_expire: client.deadline_expire,
         situation: client.situation,
         responsible_contact: "",
         contact_name: result_search.qsa.length > 0 ? result_search.qsa[0].nome : "",

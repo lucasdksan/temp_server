@@ -17,7 +17,6 @@ export type possibleCustomersType = {
     date_issue: string;
     type: string;
     validity: string;
-    deadline_expire: string;
     situation: boolean;
     responsible_contact: string | null;
     contact_name: string | null;

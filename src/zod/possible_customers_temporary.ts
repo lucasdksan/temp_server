@@ -6,7 +6,6 @@ export const possible_customers_temporary = z.object({
     date_issue: z.string(),
     comments: z.union([ z.string(), z.null(), z.undefined() ]),
     validity: z.string(),
-    deadline_expire: z.string(),
     situation: z.boolean(),
     search_performed: z.boolean()
 });

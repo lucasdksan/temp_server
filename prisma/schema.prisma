@@ -257,7 +257,6 @@ model PossibleCustomers {
   date_issue                      String
   type                            String
   validity                        String
-  deadline_expire                 String
   situation                       Boolean
   responsible_contact             String?
   contact_name                    String?
@@ -319,7 +318,6 @@ model PossibleCustomersTemporary {
   date_issue       String
   comments         String?
   validity         String
-  deadline_expire  String
   situation        Boolean
   search_performed Boolean  @default(false)
   created_at       DateTime @default(now())

@@ -18,7 +18,6 @@ export const possible_customer = z.object({
     date_issue: z.string(),
     type: z.string(),
     validity: z.string(),
-    deadline_expire: z.string(),
     situation: z.boolean(),
     responsible_contact: z.union([z.string(), z.null(), z.undefined()]),
     contact_name: z.union([z.string(), z.null(), z.undefined()]),

@@ -44,7 +44,6 @@ export default class SearchModel {
                     { date_issue: { contains: search } },
                     { efr: { contains: search } },
                     { date_situation: { contains: search } },
-                    { deadline_expire: { contains: search } },
                     { legal_nature: { contains: search } },
                     { fantasy_name: { contains: search } },
                     { id: { contains: search } },
