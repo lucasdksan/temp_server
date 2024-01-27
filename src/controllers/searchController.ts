@@ -7,7 +7,7 @@ export default class SearchController {
             const body = req.body;
             const searchModel = new SearchModel();
 
-            const result = await searchModel.process(body);
+            const result = await searchModel.looking(body);
 
             return res.json(result).status(200);
         } catch (error) {

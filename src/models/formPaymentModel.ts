@@ -2,7 +2,7 @@ import { prisma } from '../prisma';
 import { form_payment } from './../zod/form_payment';
 
 export default class FormPaymentModel {
-    async architect(body: any){
+    async creating(body: any){
         if (!body) throw Error("Files not exist");
         
         const { type } = form_payment.parse(body);
@@ -12,12 +12,11 @@ export default class FormPaymentModel {
             }
         });
 
-        if(!result_create) throw Error("Fail Create Type Payment");
-
-        return true;
+        if(!result_create) return false;
+        else return true;
     }
 
-    async rise() {
+    async listing() {
         const resultList = await prisma.formPayment.findMany();
 
         if(!resultList) throw Error("Erro in list form payment!");

@@ -1,14 +1,15 @@
+import { modificationRecordSave } from "../libs/modificationRecordSave";
 import { prisma } from "../prisma";
 
 export default class FinancialModel {
-    async create(body: any, file: Express.Multer.File | undefined) {
+    async creating(body: any) {
         try {
             if (!body) throw new Error("Files not exist");
-            if (!file) throw new Error("File not exist");
 
             const { description, expense_classification, date_receipt,
                 value_computed, nfe_nfce, payment_methods,
-                comments, constructions_id, description_the_main } = body;
+                comments, constructions_id, description_the_main, user_id } = body;
+            const mod_id = await modificationRecordSave(user_id);
 
             const resultCreatedFinancial = await prisma.financial.create({
                 data: {
@@ -20,20 +21,13 @@ export default class FinancialModel {
                     payment_methods,
                     comments,
                     description_the_main,
-                    constructions_id: constructions_id ? constructions_id : null
+                    constructions_id: constructions_id ? constructions_id : null,
+                    modification_record_id: mod_id
                 }
             });
 
-            // if (result) {
-            //     await prisma.proofExpenseFiles.create({
-            //         data: {
-            //             file_name: file.originalname,
-            //             financial_id: resultCreatedFinancial.id
-            //         }
-            //     });
-            // }
-
-            return true;
+            if(!resultCreatedFinancial) return false;
+            else return true;
         } catch (error) {
             console.log("Error: ", error);
             return false;
@@ -42,8 +36,33 @@ export default class FinancialModel {
         }
     }
 
-    async list() {
-        const list = await prisma.financial.findMany();
+    async listing() {
+        const date = new Date();
+
+        const list = await prisma.financial.findMany({
+            where: {
+                OR: [
+                    { date_receipt: { contains: String(date.getFullYear()) } },
+                    { date_receipt: { contains: String(date.getFullYear() - 1) } }
+                ]
+            }
+        });
+
+        if (!list) throw new Error("Não possui lista");
+
+        return list;
+    }
+
+    async indexing(year: string){
+        if (!year) throw new Error("Not exist");
+
+        const list = await prisma.financial.findMany({
+            where: {
+                OR: [
+                    { date_receipt: { contains: year } }
+                ]
+            }
+        });
 
         if (!list) throw new Error("Não possui lista");
 

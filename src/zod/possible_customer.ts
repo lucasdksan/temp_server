@@ -37,5 +37,6 @@ export const possible_customer = z.object({
     special_situation_date: z.union([z.string(), z.null(), z.undefined()]),
     share_capital: z.union([z.string(), z.null(), z.undefined()]),
     send_email: z.boolean(),
-    customer_feedback: z.boolean()
+    customer_feedback: z.boolean(),
+    user_id: z.string()
 });

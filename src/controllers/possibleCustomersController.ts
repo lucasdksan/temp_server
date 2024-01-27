@@ -6,7 +6,7 @@ export default class PossibleCustomersController {
     async list(req: Request, res: Response) {
         try {
             const possibleCustomersModel = new PossibleCustomersModel();
-            const list = await possibleCustomersModel.list();
+            const list = await possibleCustomersModel.listing();
 
             return res.json(possibleCustomerViewMany(list)).status(200);
         } catch (error) {
@@ -19,9 +19,10 @@ export default class PossibleCustomersController {
             const body = req.body;
             const possibleCustomersModel = new PossibleCustomersModel();
 
-            await possibleCustomersModel.process(body);
-
-            return res.json({ message: "Possible Customer Added Successfully" }).status(200);
+            const result = await possibleCustomersModel.creating(body);
+            
+            if(result) return res.json({ message: "Possible Customer Added Successfully" }).status(200);
+            else return res.json({ error: "Error in create"}).status(500);
         } catch (error) {
             return res.json({ error }).status(500);
         }
@@ -33,7 +34,7 @@ export default class PossibleCustomersController {
             const body = req.body;
             const possibleCustomersModel = new PossibleCustomersModel();
 
-            await possibleCustomersModel.updata(id, body);
+            await possibleCustomersModel.updating(id, body);
 
             return res.json({ message: "Possible Customers update completed successfully" }).status(200);
         } catch (error) {
@@ -45,7 +46,7 @@ export default class PossibleCustomersController {
         try {
             const { id } = req.query;
             const possibleCustomersModel = new PossibleCustomersModel();
-            const result = await possibleCustomersModel.get(id);
+            const result = await possibleCustomersModel.indexing(id);
 
             return res.json(possibleCustomersView(result)).status(200);
         } catch (error) {
@@ -58,20 +59,21 @@ export default class PossibleCustomersController {
             const { id } = req.query;
             const possibleCustomersModel = new PossibleCustomersModel();
 
-            await possibleCustomersModel.remove(id);
+            const result = await possibleCustomersModel.excluding(id);
 
-            return res.json({ message: "Possible Customers removed successfully" }).status(200);
+            if(result) return res.json({ message: "Possible Customers removed successfully" }).status(200);
+            else return res.json({ error: "Error in excluding"}).status(500);
         } catch (error) {
             return res.json({ error }).status(500);
         }
     }
 
-    async storeLargeData(req: Request, res: Response){
+    async store(req: Request, res: Response){
         try {
             const body = req.body;
             const possibleCustomersModel = new PossibleCustomersModel();
 
-            const result = await possibleCustomersModel.stock(body);
+            const result = await possibleCustomersModel.stocking(body);
 
             if(result) return res.json({ message: "Client Registed!" }).status(200);
 

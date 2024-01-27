@@ -3,10 +3,10 @@ generator client {
 }
 
 datasource db {
-  // provider = "sqlite"
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "sqlite"
+  // provider          = "mysql"
+  url      = env("DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Employees {
@@ -216,6 +216,7 @@ model ModificationRecord {
   financial           Financial[]
   proof_expense_files ProofExpenseFiles[]
   send_emails         SendEmail[]
+  last_change         String
   created_at          DateTime            @default(now())
   update_at           DateTime            @updatedAt
 

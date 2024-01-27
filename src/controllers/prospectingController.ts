@@ -5,7 +5,7 @@ export default class ProspectingController {
     async start(req: Request, res: Response){
         try {
             const prospectingModel = new ProspectingModel();
-            const { errors, processedClients } = await prospectingModel.process();
+            const { errors, processedClients } = await prospectingModel.starting();
 
             if(errors && errors.length > 0) {
                 return res.json({ message: "prospecting completed! However, some data could not be saved", errors, processedClients }).status(200);
@@ -17,11 +17,11 @@ export default class ProspectingController {
         }
     }
 
-    async startUnique(req: Request, res: Response){
+    async work(req: Request, res: Response){
         try {
             const { cnpj } = req.query;
             const prospectingModel = new ProspectingModel();
-            const result = await prospectingModel.processUnique(cnpj);
+            const result = await prospectingModel.working(cnpj);
             
             return res.json(result).status(200);
         } catch (error) {

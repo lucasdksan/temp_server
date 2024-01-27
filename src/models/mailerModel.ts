@@ -4,7 +4,7 @@ import nodemailer from "nodemailer";
 import { prisma } from '../prisma';
 
 export default class MailerModel {
-    async generate(id: any) {
+    async sending(id: any) {
         if(!id) throw Error("Error in Possible Customers search: Possible Customers does not exist");
         
         const transport = nodemailer.createTransport(nodemailerConfig);
@@ -59,5 +59,13 @@ export default class MailerModel {
         });
 
         return true;
+    }
+
+    async listing(){
+        const listMailer = await prisma.sendEmail.findMany();
+
+        if(!listMailer) throw Error("Error in get List");
+
+        return listMailer;
     }
 }

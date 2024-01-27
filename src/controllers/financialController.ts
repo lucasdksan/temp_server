@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
+
 import FinancialModel from "../models/financialModel";
 import { financialViewMany } from "../views/financialView";
 
 export default class FinancialController{
-    async upload(req: Request, res: Response){
+    async create(req: Request, res: Response){
         try {
             const body = req.body;
-            const file = req.file;
             const financialModel = new FinancialModel();
 
-            await financialModel.create(body, file);
+            const result = await financialModel.creating(body);
 
-            return res.json({ message: "Deu certo" }).status(200);
+            if(result) return res.json({ message: "Deu certo" }).status(200);
+            else return res.json({ error: "Error in create"}).status(500);
         } catch (error) {
             return res.json(error).status(500);
         }
@@ -20,7 +21,19 @@ export default class FinancialController{
     async list(req: Request, res: Response){
         try {
             const financialModel = new FinancialModel();
-            const list = await financialModel.list();
+            const list = await financialModel.listing();
+
+            return res.json(financialViewMany(list)).status(200);
+        } catch (error) {
+            return res.json(error).status(500);
+        }
+    }
+
+    async index(req: Request, res: Response){
+        try {
+            const { year } = req.query;
+            const financialModel = new FinancialModel();
+            const list = await financialModel.indexing(year as string);
 
             return res.json(financialViewMany(list)).status(200);
         } catch (error) {

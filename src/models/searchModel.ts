@@ -1,7 +1,7 @@
 import { prisma } from "../prisma";
 
 export default class SearchModel {
-    async process(body: any) {
+    async looking(body: any) {
         if (!body) throw Error("Search Error");
 
         const { search } = body;

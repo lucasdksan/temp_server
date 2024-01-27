@@ -3,7 +3,7 @@ import { nodemailerConfig } from "../email/mailerConfig";
 import { mailerSingle } from "../email/mailerSingle";
 
 export default class EmailReceivedModel {
-    async sendUnique(body: any){
+    async sending(body: any){
         if(!body) throw Error("Dados Invalidos");
 
         const { email, name, textContent } = body;
@@ -13,7 +13,7 @@ export default class EmailReceivedModel {
         const transport = nodemailer.createTransport(nodemailerConfig);
         const resultSendEmail = await transport.sendMail({
             from: process.env.NODEMAILER_EMAIL,
-            to: "lokasmega@gmail.com",
+            to: process.env.NODEMAILER_EMAIL,
             subject: "Contato Home Page",
             html: mailerSingle(textContent, name, email),
         });

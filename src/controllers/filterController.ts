@@ -7,7 +7,7 @@ export default class FilterController {
             const body = req.body;
             const filterModel = new FilterModel();
 
-            const result = await filterModel.process(body);
+            const result = await filterModel.filtering(body);
 
             return res.json(result);
         } catch (error) {

@@ -8,7 +8,7 @@ export default class EmailReceivedController {
 
             const emailReceivedModel = new EmailReceivedModel();
 
-            const result = await emailReceivedModel.sendUnique(body);
+            const result = await emailReceivedModel.sending(body);
 
             if(result) return res.json({ message: "Email Enviado!" }).status(200);
 

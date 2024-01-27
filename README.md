@@ -73,3 +73,40 @@ Exemplo: Circle, Travis, BrowserStack, etc.
 - **zod**: 3.22.4
 - **body-parser**: 1.20.2
 - **cors**: 2.8.5
+
+## Architecture
+
+### Controllers
+
+- **create**: Create something in the database. Preferably a large amount of data.
+- **authenticate**: User authentication controller.
+- **verify**: Check something. For example, used in middleware.
+- **list**: List information in the database.
+- **send**: Send information to something, example sending data by email.
+- **filter**: Filter information.
+- **upload**: Upload files or form information from the front end.
+- **update**: Update information in the database.
+- **index**: Searches for information on a specific item in the database.
+- **delete**: Delete information from the database.
+- **store**: Save a large amount of data to the database.
+- **start**: Starting a process that can take a long time.
+- **work**: Start a process quickly.
+- **search**: Doing a search that can returns x amount of data.
+
+### Models
+
+- **creatingIndex**: 
+- **creating**:
+- **listing**: 
+- **sending**: 
+- **filtering**: 
+- **loading**: 
+- **updating**: 
+- **indexing**: 
+- **excluding**: 
+- **starting**: 
+- **looking**: 
+- **authenticating**: 
+- **checking**: 
+- **stocking**: 
+- **working**:

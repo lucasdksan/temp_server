@@ -8,9 +8,10 @@ export default class ClassificationExpensesController {
             const body = req.body;
             const classificationExpensesModel = new ClassificationExpensesModel();
 
-            const result = await classificationExpensesModel.architect(body);
+            const result = await classificationExpensesModel.creating(body);
 
             if(result) return res.json({ message: "Criado com sucesso!" }).status(200);
+            else return res.json({ error: "Error in create" }).status(500);
         } catch (error) {
             return res.json({ error }).status(500);
         }
@@ -20,7 +21,7 @@ export default class ClassificationExpensesController {
         try {
             const classificationExpensesModel = new ClassificationExpensesModel();
 
-            const result = await classificationExpensesModel.rise();
+            const result = await classificationExpensesModel.listing();
 
             return res.json(classificationExpensesViewMany(result)).status(200);
         } catch (error) {

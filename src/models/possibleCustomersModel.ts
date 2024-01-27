@@ -1,21 +1,26 @@
+import { modificationRecordSave } from "../libs/modificationRecordSave";
 import { prisma } from "../prisma";
 import { possible_customer } from "../zod/possible_customer";
 
-export default class PossibleCustomersModel {
-    async process(body: any) {
+export default class listingPossibleCustomersModel {
+    async creating(body: any) {
         if (!body) throw Error("Error Adding Possible Customer");
 
-        const data = possible_customer.parse(body);
+        const { user_id, ...data } = possible_customer.parse(body);
+        const modId = await modificationRecordSave(user_id);
+
         const resultCrate = await prisma.possibleCustomers.create({
-            data: data
+            data: {
+                modification_record_id: modId,
+                ...data
+            }
         });
 
-        if (!resultCrate) throw Error("Error Adding Possible Customer");
-
-        return resultCrate;
+        if (!resultCrate) return false;
+        else return true;
     }
 
-    async list() {
+    async listing() {
         const list = await prisma.possibleCustomers.findMany({ include: { possible_customer_main_activity: true, possible_customer_QSA: true } });
 
         if (!list) throw Error("Error Returning the List");
@@ -23,7 +28,7 @@ export default class PossibleCustomersModel {
         return list;
     }
 
-    async updata(id: any, body: any) {
+    async updating(id: any, body: any) {
         if (!id) throw Error("Possible Customers error");
         if (!body) throw Error("Possible Customers error");
 
@@ -37,7 +42,7 @@ export default class PossibleCustomersModel {
         return resultUpdate;
     }
 
-    async get(id: any) {
+    async indexing(id: any) {
         if (!id) throw Error("Error in Possible Customers search: Possible Customers does not exist");
 
         const resultSearch = await prisma.possibleCustomers.findUnique({
@@ -50,37 +55,39 @@ export default class PossibleCustomersModel {
         return resultSearch;
     }
 
-    async remove(id: any) {
+    async excluding(id: any) {
         if (!id) throw Error("Error removing Possible Customers: Possible Customers does not exist");
 
         const resultDelete = await prisma.possibleCustomers.delete({
             where: { id }
         });
 
-        if (!resultDelete) throw Error("Error removing Possible Customers: Possible Customers does not exist");
-
-        return resultDelete;
+        if (!resultDelete) return false;
+        else return true;
     }
 
-    async stock(body: any) {
+    async stocking(body: any) {
         if (!body) throw Error("Possible Customers error");
         const arraYExistCleints: any[] = [];
 
         try {
             for (let clientRest of body) {
-                const { possible_customer_QSA, possible_customer_main_activity, search_performed, cnpj, ...rest } = clientRest;
-                const exist = await prisma.possibleCustomers.findFirst({
+                let { possible_customer_QSA, possible_customer_main_activity, search_performed, cnpj, user_id, ...rest } = clientRest;
+                let exist = await prisma.possibleCustomers.findFirst({
                     where: {
                         cpf_cnpj: cnpj
                     }
                 });
+                let modId = await modificationRecordSave(user_id);
 
                 if (exist !== null) {
                     arraYExistCleints.push(exist);
                 } else {
-                    const createdClient = await prisma.possibleCustomers.create({
+                    let createdClient = await prisma.possibleCustomers.create({
                         data: {
+                            modification_record_id: modId,
                             cpf_cnpj: cnpj,
+                            
                             ...rest
                         }
                     });

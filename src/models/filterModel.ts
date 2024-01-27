@@ -1,7 +1,7 @@
 import { prisma } from "../prisma";
 
 export default class FilterModel {
-    async process(body: any) {
+    async filtering(body: any) {
         if (!body) throw Error("Filter error");
 
         const { selectedState, startDate, endDate } = body;

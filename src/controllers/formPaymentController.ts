@@ -8,9 +8,10 @@ export default class FormPaymentController {
             const body = req.body;
             const formPaymentModel = new FormPaymentModel();
 
-            const result = await formPaymentModel.architect(body);
+            const result = await formPaymentModel.creating(body);
 
             if(result) return res.json({ message: "Criado com sucesso!" }).status(200);
+            else return res.json({ error: "Error in create"}).status(500);
         } catch (error) {
             return res.json({ error }).status(500);
         }
@@ -20,7 +21,7 @@ export default class FormPaymentController {
         try {
             const formPaymentModel = new FormPaymentModel();
 
-            const result = await formPaymentModel.rise();
+            const result = await formPaymentModel.listing();
 
             return res.json(formPaymentViewMany(result)).status(200);
         } catch (error) {

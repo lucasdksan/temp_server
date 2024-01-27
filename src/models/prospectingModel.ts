@@ -5,7 +5,7 @@ import { prisma } from "../prisma";
 import { formatDataStartPossibleCustomer } from "../libs/formatDataStartPossibleCustomer";
 
 export default class ProspectingModel {
-    async process() {
+    async starting() {
         const client_list = await prisma.possibleCustomersTemporary.findMany();
         const errors: any[] = [];
         const limitRequisitionsPerMinute = 3;
@@ -94,7 +94,7 @@ export default class ProspectingModel {
         return { processedClients, errors };
     }
 
-    async processUnique(cnpj: any){
+    async working(cnpj: any){
         if(!cnpj) throw Error("Cnpj Invalido");
         if(typeof cnpj !== "string") throw Error("Cnpj Invalido");
 

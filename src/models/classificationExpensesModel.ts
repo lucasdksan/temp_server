@@ -2,7 +2,7 @@ import { prisma } from "../prisma";
 import { classification_expenses } from "../zod/classification_expenses";
 
 export default class ClassificationExpensesModel {
-    async architect(body: any){
+    async creating(body: any){
         if (!body) throw Error("Files not exist");
         
         const { type } = classification_expenses.parse(body);
@@ -12,12 +12,11 @@ export default class ClassificationExpensesModel {
             }
         });
 
-        if(!result_create) throw Error("Fail Create Type Classification Expenses");
-
-        return true;
+        if(!result_create) return false;
+        else return true;
     }
 
-    async rise(){
+    async listing(){
         const resultList = await prisma.classificationExpenses.findMany();
 
         if(!resultList) throw Error("Erro in list form payment!");
