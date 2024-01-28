@@ -172,12 +172,13 @@ model Clients {
   number                 String
   neighborhood           String
   cep                    String
+  passwordResetToken     String?
+  passwordResetExpires   DateTime?
   construction           Constructions[]
   docsClient             DocsClient[]
   clientAlert            ClientAlert[]
   modification_record    ModificationRecord? @relation(fields: [modification_record_id], references: [id])
   modification_record_id String?
-  RefreshTokenClient     RefreshTokenClient?
   created_at             DateTime            @default(now())
   update_at              DateTime            @updatedAt
 
@@ -224,17 +225,18 @@ model ModificationRecord {
 }
 
 model Users {
-  id                  String               @id @default(uuid())
-  master              Boolean              @default(false)
-  email               String
-  name                String
-  password            String
-  tel                 String
-  token               String               @default("")
-  refresh_token_admin RefreshTokenAdmin?
-  modification_record ModificationRecord[]
-  created_at          DateTime             @default(now())
-  update_at           DateTime             @updatedAt
+  id                   String               @id @default(uuid())
+  master               Boolean              @default(false)
+  email                String
+  name                 String
+  password             String
+  tel                  String
+  token                String               @default("")
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+  modification_record  ModificationRecord[]
+  created_at           DateTime             @default(now())
+  update_at            DateTime             @updatedAt
 
   @@map("users")
 }
@@ -372,24 +374,6 @@ model SendEmail {
   update_at              DateTime            @updatedAt
 
   @@map("sendEmail")
-}
-
-model RefreshTokenAdmin {
-  id        String @id @default(uuid())
-  expiresIn Int
-  admin     Users  @relation(fields: [user_id], references: [id])
-  user_id   String @unique
-
-  @@map("refreshTokenAdmin")
-}
-
-model RefreshTokenClient {
-  id        String  @id @default(uuid())
-  expiresIn Int
-  client    Clients @relation(fields: [client_id], references: [id])
-  client_id String  @unique
-
-  @@map("refreshTokenClient")
 }
 
 model FormPayment {

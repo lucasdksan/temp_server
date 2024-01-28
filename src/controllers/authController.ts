@@ -45,4 +45,34 @@ export default class AuthController {
             return res.json({ error }).status(500);
         }
     }
+
+    async forgotPassword(req: Request, res: Response) {
+        try {
+            const { email } = req.body;
+            const authModel = new AuthModel();
+
+            const result = await authModel.forgoting(email);
+
+            if(!result) res.json({ error: "Error in sending token!" }).status(500);
+
+            else return res.json({ message: "Token sending sucess" }).status(200);
+        } catch (error) {
+            return res.json({ error }).status(500);
+        }
+    }
+
+    async resetPassword(req: Request, res: Response){
+        try {
+            const { token, password, email } = req.body;
+            const authModel = new AuthModel();
+
+            const result = await authModel.redefining(email, password, token);
+
+            if(!result) res.json({ error: "Error in sending token!" }).status(500);
+
+            else return res.json({ message: "Token sending sucess" }).status(200);
+        } catch (error) {
+            return res.json({ error }).status(500);
+        }
+    }
 }

@@ -6,7 +6,6 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export default function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    req;
     const authHeader = req.headers.authorization;
 
     if (!authHeader) return res.status(401).json({ error: "No token provided" });

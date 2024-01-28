@@ -47,7 +47,8 @@ routes.post("/financial/uploads", authMiddleware, financialController.create);
 routes.post("/admin/sign_in", authController.authenticate);
 routes.post("/admin/register", authController.create);
 routes.post("/supplier/create", authMiddleware, supplierController.create);
-
+routes.post("/forgot_password", authController.forgotPassword);
+routes.post("/reset_password", authController.resetPassword);
 
 routes.get("/prospecting", authMiddleware, prospectingController.start);
 routes.get("/possible_customers_temporary/list", authMiddleware, possibleCustomersTemporaryController.list);
