@@ -8,13 +8,12 @@ export default class FinancialController{
         try {
             const body = req.body;
             const financialModel = new FinancialModel();
-
             const result = await financialModel.creating(body);
 
             if(result) return res.json({ message: "Deu certo" }).status(200);
             else return res.json({ error: "Error in create"}).status(500);
         } catch (error) {
-            return res.json(error).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -25,7 +24,7 @@ export default class FinancialController{
 
             return res.json(financialViewMany(list)).status(200);
         } catch (error) {
-            return res.json(error).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -37,7 +36,7 @@ export default class FinancialController{
 
             return res.json(financialViewMany(list)).status(200);
         } catch (error) {
-            return res.json(error).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

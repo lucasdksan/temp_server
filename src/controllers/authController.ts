@@ -8,7 +8,6 @@ export default class AuthController {
     async create(req: Request, res: Response) {
         try {
             const body = req.body;
-            
             const authModel = new AuthModel();
             const result = await authModel.creating(body);
 
@@ -16,20 +15,19 @@ export default class AuthController {
 
             else return res.json({ message: "Register success" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
     async authenticate(req: Request, res: Response) {
         try {
             const body = req.body;
-
             const authModel = new AuthModel();
             const { findAdmin, token } = await authModel.authenticating(body);
             
             return res.json({ user: authView(findAdmin), token }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -37,12 +35,11 @@ export default class AuthController {
         try {
             const id = req["UserId"];
             const authModel = new AuthModel();
-
             const result = await authModel.checking(id);
 
             return res.json(authView(result)).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -50,14 +47,13 @@ export default class AuthController {
         try {
             const { email } = req.body;
             const authModel = new AuthModel();
-
             const result = await authModel.forgoting(email);
 
             if(!result) res.json({ error: "Error in sending token!" }).status(500);
 
             else return res.json({ message: "Token sending sucess" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -65,14 +61,13 @@ export default class AuthController {
         try {
             const { token, password, email } = req.body;
             const authModel = new AuthModel();
-
             const result = await authModel.redefining(email, password, token);
 
             if(!result) res.json({ error: "Error in sending token!" }).status(500);
 
             else return res.json({ message: "Token sending sucess" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

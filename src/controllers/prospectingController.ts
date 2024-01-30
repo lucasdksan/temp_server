@@ -13,7 +13,7 @@ export default class ProspectingController {
             
             return res.json({ message: "prospecting completed!" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -25,7 +25,7 @@ export default class ProspectingController {
             
             return res.json(result).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

@@ -5,9 +5,8 @@ import { possibleCustomersTemporaryViewMany } from "../views/possibleCustomersTe
 export default class PossibleCustomersTemporaryController{
     async create(req: Request, res: Response){
         try {
-            const body = req.body;
+            const body = req.body;            
             const possibleCustomersTemporaryModel = new PossibleCustomersTemporaryModel();
-            
             const { notSaved, saved } = await possibleCustomersTemporaryModel.creating(body);
 
             if(notSaved && notSaved.length > 0) {
@@ -16,7 +15,7 @@ export default class PossibleCustomersTemporaryController{
 
             return res.json({ message: "prospecting completed!" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -24,14 +23,13 @@ export default class PossibleCustomersTemporaryController{
         try {
             const body = req.body;
             const possibleCustomersTemporaryModel = new PossibleCustomersTemporaryModel();
-
             const result = await possibleCustomersTemporaryModel.creatingIndex(body);
 
             if(!result) return res.json({ error: "Erro !" }).status(500);
 
             return res.json({ message: "prospecting completed!" }).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -42,7 +40,7 @@ export default class PossibleCustomersTemporaryController{
 
             return res.json(possibleCustomersTemporaryViewMany(list)).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

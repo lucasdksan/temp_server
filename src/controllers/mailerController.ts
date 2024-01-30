@@ -13,7 +13,7 @@ export default class MailerController {
 
             return res.json({ message: "Falha ao enviar!", status: false }).status(500);
         } catch (error) {
-            return res.json({ error, status: false }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 
@@ -24,7 +24,7 @@ export default class MailerController {
 
             return res.json(mailerViewMany(list)).status(200);
         } catch (error) {
-            return res.json({ error, status: false }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

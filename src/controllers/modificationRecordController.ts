@@ -9,7 +9,7 @@ export default class ModificationRecordController {
 
             return res.json(listModification).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

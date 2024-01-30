@@ -15,6 +15,8 @@ import AuthController from "./controllers/authController";
 import authMiddleware from "./middlewares/auth";
 import ModificationRecordController from "./controllers/modificationRecordController";
 import SupplierController from "./controllers/supplierController";
+import EquipmentsController from "./controllers/equipmentsController";
+import EmployeesController from "./controllers/employeesController";
 
 const routes = express.Router();
 
@@ -32,6 +34,8 @@ const descriptionWorkServiceController = new DescriptionWorkServiceController();
 const authController = new AuthController();
 const modificationRecordController = new ModificationRecordController();
 const supplierController = new SupplierController();
+const equipmentsController = new EquipmentsController();
+const employeesController = new EmployeesController();
 
 routes.post("/possible_customers_temporary", authMiddleware, possibleCustomersTemporaryController.create);
 routes.post("/possible_customers_temporary_unique", authMiddleware, possibleCustomersTemporaryController.createIndex);
@@ -44,9 +48,11 @@ routes.post("/form_payment", authMiddleware, formPaymentController.create);
 routes.post("/classification_expenses", authMiddleware, classificationExpensesController.create);
 routes.post("/description_work_service", authMiddleware, descriptionWorkServiceController.create);
 routes.post("/financial/uploads", authMiddleware, financialController.create);
+routes.post("/supplier/create", authMiddleware, supplierController.create);
+routes.post("/equipments/create", authMiddleware, equipmentsController.create);
+routes.post("/employees/create", authMiddleware, employeesController.create);
 routes.post("/admin/sign_in", authController.authenticate);
 routes.post("/admin/register", authController.create);
-routes.post("/supplier/create", authMiddleware, supplierController.create);
 routes.post("/forgot_password", authController.forgotPassword);
 routes.post("/reset_password", authController.resetPassword);
 
@@ -65,12 +71,21 @@ routes.get("/admin/token-validate", authMiddleware, authController.verify);
 routes.get("/modification_record/list", authMiddleware, modificationRecordController.list);
 routes.get("/send_mailer/list", authMiddleware, mailerController.list);
 routes.get("/supplier/list", authMiddleware, supplierController.list);
+routes.get("/equipments/list", authMiddleware, equipmentsController.list);
+routes.get("/equipments", authMiddleware, equipmentsController.index);
 routes.get("/supplier", authMiddleware, supplierController.index);
+routes.get("/employees/list", authMiddleware, employeesController.list);
+routes.get("/employees", authMiddleware, employeesController.index);
+routes.get("/employees/data/list", authMiddleware, employeesController.listData);
 
 routes.put("/possible_customers/update", authMiddleware, possibleCustomersController.update);
 routes.put("/supplier/update", authMiddleware, supplierController.update);
+routes.put("/equipments/update", authMiddleware, equipmentsController.update);
+routes.put("/employees/update", authMiddleware, employeesController.update);
 
 routes.delete("/possible_customers/delete", authMiddleware, possibleCustomersController.delete);
 routes.delete("/supplier/delete", authMiddleware, supplierController.delete);
+routes.delete("/equipments/delete", authMiddleware, equipmentsController.delete);
+routes.delete("/employees/delete", authMiddleware, employeesController.delete);
 
 export default routes;

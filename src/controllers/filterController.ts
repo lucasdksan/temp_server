@@ -6,12 +6,11 @@ export default class FilterController {
         try {
             const body = req.body;
             const filterModel = new FilterModel();
-
             const result = await filterModel.filtering(body);
 
             return res.json(result);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

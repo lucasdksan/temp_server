@@ -6,12 +6,11 @@ export default class SearchController {
         try {
             const body = req.body;
             const searchModel = new SearchModel();
-
             const result = await searchModel.looking(body);
 
             return res.json(result).status(200);
         } catch (error) {
-            return res.json({ error }).status(500);
+            return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
 }

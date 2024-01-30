@@ -2,7 +2,7 @@ import { supplierZod } from './../zod/supplierZod';
 import { modificationRecordSave } from "../libs/modificationRecordSave";
 import { prisma } from '../prisma';
 
-export default class SupplierModal {
+export default class SupplierModel {
     async creating(body: any) {
         if (!body) throw Error("Data invalit");
 
