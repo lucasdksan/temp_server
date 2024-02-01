@@ -17,6 +17,8 @@ import ModificationRecordController from "./controllers/modificationRecordContro
 import SupplierController from "./controllers/supplierController";
 import EquipmentsController from "./controllers/equipmentsController";
 import EmployeesController from "./controllers/employeesController";
+import ConstructionsController from "./controllers/constructionsController";
+import AdminController from "./controllers/adminController";
 
 const routes = express.Router();
 
@@ -36,6 +38,8 @@ const modificationRecordController = new ModificationRecordController();
 const supplierController = new SupplierController();
 const equipmentsController = new EquipmentsController();
 const employeesController = new EmployeesController();
+const constructionsController = new ConstructionsController();
+const adminController = new AdminController();
 
 routes.post("/possible_customers_temporary", authMiddleware, possibleCustomersTemporaryController.create);
 routes.post("/possible_customers_temporary_unique", authMiddleware, possibleCustomersTemporaryController.createIndex);
@@ -51,6 +55,9 @@ routes.post("/financial/uploads", authMiddleware, financialController.create);
 routes.post("/supplier/create", authMiddleware, supplierController.create);
 routes.post("/equipments/create", authMiddleware, equipmentsController.create);
 routes.post("/employees/create", authMiddleware, employeesController.create);
+routes.post("/constructions", authMiddleware, constructionsController.create);
+routes.post("/admin/create", authMiddleware, adminController.create);
+routes.post("/admin/create/custom", adminController.create);
 routes.post("/admin/sign_in", authController.authenticate);
 routes.post("/admin/register", authController.create);
 routes.post("/forgot_password", authController.forgotPassword);
@@ -76,16 +83,23 @@ routes.get("/equipments", authMiddleware, equipmentsController.index);
 routes.get("/supplier", authMiddleware, supplierController.index);
 routes.get("/employees/list", authMiddleware, employeesController.list);
 routes.get("/employees", authMiddleware, employeesController.index);
-routes.get("/employees/data/list", authMiddleware, employeesController.listData);
+routes.get("/constructions", authMiddleware, constructionsController.index);
+routes.get("/constructions/list", authMiddleware, constructionsController.list);
+routes.get("/admin/list", authMiddleware, adminController.list);
+routes.get("/admin", authMiddleware, adminController.index);
 
 routes.put("/possible_customers/update", authMiddleware, possibleCustomersController.update);
 routes.put("/supplier/update", authMiddleware, supplierController.update);
 routes.put("/equipments/update", authMiddleware, equipmentsController.update);
 routes.put("/employees/update", authMiddleware, employeesController.update);
+routes.put("/constructions/update", authMiddleware, constructionsController.update);
+routes.put("/admin/update", authMiddleware, adminController.update);
 
 routes.delete("/possible_customers/delete", authMiddleware, possibleCustomersController.delete);
 routes.delete("/supplier/delete", authMiddleware, supplierController.delete);
 routes.delete("/equipments/delete", authMiddleware, equipmentsController.delete);
 routes.delete("/employees/delete", authMiddleware, employeesController.delete);
+routes.delete("/constructions/delete", authMiddleware, constructionsController.delete);
+routes.delete("/admin/delete", authMiddleware, adminController.delete);
 
 export default routes;

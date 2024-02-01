@@ -8,7 +8,7 @@ export default class FilterController {
             const filterModel = new FilterModel();
             const result = await filterModel.filtering(body);
 
-            return res.json(result);
+            return res.json(result).status(200);
         } catch (error) {
             return res.status(500).json({ error: error || "Internal Server Error" });
         }

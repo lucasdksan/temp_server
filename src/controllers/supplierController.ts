@@ -46,8 +46,8 @@ export default class SupplierController {
             const supplierModel = new SupplierModel();
             const result = await supplierModel.excluding(id);
 
-            if(result) return res.json({ message: "Supplier Deleting" });
-            else return res.json({ message: "Error in Supplier Excluding" });
+            if(result) return res.json({ message: "Supplier Deleting" }).status(200);
+            else return res.json({ message: "Error in Supplier Excluding" }).status(500);
         } catch (error) {
             return res.status(500).json({ error: error || "Internal Server Error" });
         }

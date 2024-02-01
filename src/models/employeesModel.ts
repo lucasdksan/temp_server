@@ -22,22 +22,11 @@ export default class EmployeesModel {
     }
 
     async listing() {
-        const list = await prisma.employees.findMany();
-
-        if (!list) throw Error("Not list");
-
-        return list;
-    }
-
-    async listingData(id: any) {
-        if (!id || id === "") throw Error("Not exist");
-
         const list = await prisma.employees.findMany({
-            where: { id },
             include: {
-                equipments: true,
                 construction: true,
-                employeeFiles: true
+                employeeFiles: true,
+                equipments: true
             }
         });
 
@@ -50,7 +39,12 @@ export default class EmployeesModel {
         if (!id || id === "") throw Error("Not exist");
 
         const employee = await prisma.employees.findFirst({
-            where: { id }
+            where: { id },
+            include: {
+                construction: true,
+                employeeFiles: true,
+                equipments: true
+            }
         });
 
         if (!employee) throw Error("Not exist");

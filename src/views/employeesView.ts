@@ -1,7 +1,5 @@
 import { employeesTypes } from "../types/employeesTypes";
 
-employeesView
-
 export function employeesView(data: employeesTypes){    
     const { created_at, update_at, modification_record_id, ...employee_view } = data;
 

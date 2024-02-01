@@ -10,7 +10,7 @@ export default class EmailReceivedController {
 
             if(result) return res.json({ message: "Email Enviado!" }).status(200);
 
-            return res.json({ message: "Falha ao enviar!" }).status(500);
+            else return res.json({ message: "Falha ao enviar!" }).status(500);
         } catch (error) {
             return res.status(500).json({ error: error || "Internal Server Error" });
         }

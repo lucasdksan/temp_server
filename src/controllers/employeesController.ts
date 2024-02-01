@@ -79,16 +79,4 @@ export default class EmployeesController {
             return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
-
-    async listData(req: Request, res: Response) {
-        try {
-            const { id } = req.query;
-            const employeesModel = new EmployeesModel();
-            const list = await employeesModel.listingData(id);
-
-            return res.json(employeesViewMany(list)).status(200);
-        } catch (error) {
-            return res.status(500).json({ error: error || "Internal Server Error" });
-        }
-    }
 }
