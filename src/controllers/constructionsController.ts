@@ -7,7 +7,6 @@ export default class ConstructionsController {
         try {
             const body = req.body;
             const constructionsModel = new ConstructionsModel();
-
             const result = await constructionsModel.creating(body);
 
             if(result) return res.json({ message: "Construction Deleting" }).status(200);

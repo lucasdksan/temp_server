@@ -134,4 +134,30 @@ export default class AuthModel {
         if (!adminUpdate) return false;
         else return true;
     }
+
+    async updatingPass(id: any, body: any) {
+        if (!id) throw Error("Admin error");
+        if (!body) throw Error("Admin error");
+
+        const { pass, newPass } = body;
+        const findAdmin = await prisma.users.findFirst({
+            where: { id }
+        });
+
+        if (!findAdmin) throw Error("Admin not find!");
+
+        const resultCompare = await comparePassword(pass, findAdmin.password);
+
+        if (!resultCompare) throw Error("Invalid password!");
+
+        const password = crypt(newPass);
+
+        const admin = await prisma.users.update({
+            where: { id },
+            data: { password }
+        });
+
+        if (!admin) return false;
+        else return true;
+    }
 }

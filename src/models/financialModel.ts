@@ -26,10 +26,9 @@ export default class FinancialModel {
                 }
             });
 
-            if(!resultCreatedFinancial) return false;
+            if (!resultCreatedFinancial) return false;
             else return true;
         } catch (error) {
-            console.log("Error: ", error);
             return false;
         } finally {
             await prisma.$disconnect();
@@ -53,7 +52,7 @@ export default class FinancialModel {
         return list;
     }
 
-    async indexing(year: string){
+    async indexing(year: string) {
         if (!year) throw new Error("Not exist");
 
         const list = await prisma.financial.findMany({
@@ -67,5 +66,35 @@ export default class FinancialModel {
         if (!list) throw new Error("Não possui lista");
 
         return list;
+    }
+
+    async excluding(id: any) {
+        if (!id) throw Error("Financial error");
+
+        const result = await prisma.financial.delete({
+            where: { id }
+        });
+
+        if (!result) return false;
+        else return true;
+    }
+
+    async updating(id: any, body: any) {
+        if (!id) throw Error("Financial error");
+        if (!body) throw Error("Financial error");
+
+        const { user_id, ...data } = body;
+        const mod_id = await modificationRecordSave(user_id);
+
+        const resultCreatedFinancial = await prisma.financial.update({
+            where: { id },
+            data: {
+                modification_record_id: mod_id,
+                ...data
+            }
+        });
+
+        if (!resultCreatedFinancial) return false;
+        else return true;
     }
 }

@@ -65,7 +65,7 @@ export default class EquipmentsModel {
         if (!id) throw Error("Possible Customers error");
         if (!body) throw Error("Possible Customers error");
 
-        const { user_id, ...data } = equipmentsZod.parse(body);
+        const { user_id, ...data } = body;
         const mod_id = await modificationRecordSave(user_id);
 
         const equipment = await prisma.equipments.update({

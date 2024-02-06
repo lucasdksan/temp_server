@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const adminZod = z.object({
-    master: z.boolean(),
+    master: z.boolean().default(false),
     email: z.string().email(),
     name: z.string(),
     password: z.string(),

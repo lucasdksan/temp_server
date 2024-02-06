@@ -23,4 +23,30 @@ export default class ClassificationExpensesModel {
 
         return resultList;
     }
+
+    async excluding(id: any) {
+        if (!id) throw Error("Error in ClassificationExpenses search: ClassificationExpenses does not exist");
+
+        const result = await prisma.classificationExpenses.delete({
+            where: { id }
+        });
+
+        if (!result) return false;
+        else return true;
+    }
+
+    async updating(id: any, body: any) {
+        if (!id) throw Error("Classification and Expense error");
+        if (!body) throw Error("Classification and Expense error");
+
+        const { type } = body;
+
+        const classificationExpenses = await prisma.classificationExpenses.update({
+            where: { id },
+            data: { type }
+        });
+
+        if(!classificationExpenses) return false;
+        else return true;
+    }
 }

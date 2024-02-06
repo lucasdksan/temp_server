@@ -54,7 +54,7 @@ export default class SupplierModel {
         if (!id) throw Error("Possible Customers error");
         if (!body) throw Error("Possible Customers error");
 
-        const { user_id, ...data } = supplierZod.parse(body);
+        const { user_id, ...data } = body;
         const modId = await modificationRecordSave(user_id);
 
         const result = await prisma.suppliers.update({

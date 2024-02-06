@@ -5,9 +5,9 @@ import { mailerViewMany } from "../views/mailerView";
 export default class MailerController {
     async send(req: Request, res: Response){
         try {
-            const { id } = req.query;
+            const { id, user_id } = req.query;
             const mailerModel = new MailerModel();
-            const result = await mailerModel.sending(id);
+            const result = await mailerModel.sending(id, user_id);
 
             if(result) return res.json({ message: "Email Enviado!", status: true }).status(200);
 

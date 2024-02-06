@@ -1,7 +1,7 @@
 import { prisma } from "../prisma";
 
 export default class ModificationRecordModel {
-    async listing(){
+    async listing() {
         const result = await prisma.modificationRecord.findMany({
             include: {
                 client_alert: true,
@@ -11,9 +11,9 @@ export default class ModificationRecordModel {
                 docs_Construction: true,
                 employee_files: true,
                 employees: true,
-                equipments: true, 
+                equipments: true,
                 financial: true,
-                image_equipment: true, 
+                image_equipment: true,
                 possible_customers: true,
                 proof_expense_files: true,
                 send_emails: true,
@@ -21,7 +21,7 @@ export default class ModificationRecordModel {
             }
         });
 
-        if(!result) throw Error("Error in get List");
+        if (!result) throw Error("Error in get List");
 
         return result;
     }
@@ -30,7 +30,7 @@ export default class ModificationRecordModel {
         if (!id || id === "") throw Error("Not exist");
 
         const modificationRecord = await prisma.modificationRecord.findFirst({
-            where: { id },
+            where: { user_id: id },
             include: {
                 client_alert: true,
                 clients: true,

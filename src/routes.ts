@@ -1,5 +1,6 @@
 import express from "express";
 
+import authMiddleware from "./middlewares/auth";
 import ProspectingController from "./controllers/prospectingController";
 import PossibleCustomersTemporaryController from "./controllers/possibleCustomersTemporaryController";
 import PossibleCustomersController from "./controllers/possibleCustomersController";
@@ -12,7 +13,6 @@ import FormPaymentController from "./controllers/formPaymentController";
 import ClassificationExpensesController from "./controllers/classificationExpensesController";
 import DescriptionWorkServiceController from "./controllers/descriptionWorkServiceController";
 import AuthController from "./controllers/authController";
-import authMiddleware from "./middlewares/auth";
 import ModificationRecordController from "./controllers/modificationRecordController";
 import SupplierController from "./controllers/supplierController";
 import EquipmentsController from "./controllers/equipmentsController";
@@ -48,9 +48,9 @@ routes.post("/possible_customers/storeLargeData", authMiddleware, possibleCustom
 routes.post("/search", authMiddleware, searchController.search);
 routes.post("/filter", authMiddleware, filterController.filter);
 routes.post("/sendmailer_homepage", emailReceivedController.send);
-routes.post("/form_payment", authMiddleware, formPaymentController.create);
-routes.post("/classification_expenses", authMiddleware, classificationExpensesController.create);
-routes.post("/description_work_service", authMiddleware, descriptionWorkServiceController.create);
+routes.post("/form_payment", formPaymentController.create);
+routes.post("/classification_expenses", classificationExpensesController.create);
+routes.post("/description_work_service", descriptionWorkServiceController.create);
 routes.post("/financial/uploads", authMiddleware, financialController.create);
 routes.post("/supplier/create", authMiddleware, supplierController.create);
 routes.post("/equipments/create", authMiddleware, equipmentsController.create);
@@ -76,6 +76,7 @@ routes.get("/description_work_service/list", authMiddleware, descriptionWorkServ
 routes.get("/financial/get_year", authMiddleware, financialController.index);
 routes.get("/admin/token-validate", authMiddleware, authController.verify);
 routes.get("/modification_record/list", authMiddleware, modificationRecordController.list);
+routes.get("/modification_record", authMiddleware, modificationRecordController.index);
 routes.get("/send_mailer/list", authMiddleware, mailerController.list);
 routes.get("/supplier/list", authMiddleware, supplierController.list);
 routes.get("/equipments/list", authMiddleware, equipmentsController.list);
@@ -94,6 +95,10 @@ routes.put("/equipments/update", authMiddleware, equipmentsController.update);
 routes.put("/employees/update", authMiddleware, employeesController.update);
 routes.put("/constructions/update", authMiddleware, constructionsController.update);
 routes.put("/admin/update", authMiddleware, adminController.update);
+routes.put("/newPass", authMiddleware, authController.updatePass);
+routes.put("/classification_expenses/update", authMiddleware, classificationExpensesController.update);
+routes.put("/description_work_service/update", authMiddleware, descriptionWorkServiceController.update);
+routes.put("/form_payment/update", authMiddleware, formPaymentController.update);
 
 routes.delete("/possible_customers/delete", authMiddleware, possibleCustomersController.delete);
 routes.delete("/supplier/delete", authMiddleware, supplierController.delete);
@@ -101,5 +106,8 @@ routes.delete("/equipments/delete", authMiddleware, equipmentsController.delete)
 routes.delete("/employees/delete", authMiddleware, employeesController.delete);
 routes.delete("/constructions/delete", authMiddleware, constructionsController.delete);
 routes.delete("/admin/delete", authMiddleware, adminController.delete);
+routes.delete("/classification_expenses/delete", authMiddleware, classificationExpensesController.delete);
+routes.delete("/description_work_service/delete", authMiddleware, descriptionWorkServiceController.delete);
+routes.delete("/form_payment/delete", authMiddleware, formPaymentController.delete);
 
 export default routes;

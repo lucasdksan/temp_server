@@ -23,4 +23,30 @@ export default class FormPaymentModel {
 
         return resultList;
     }
+
+    async excluding(id: any) {
+        if (!id) throw Error("Error in Form Payment search: Form Payment does not exist");
+
+        const result = await prisma.formPayment.delete({
+            where: { id }
+        });
+
+        if (!result) return false;
+        else return true;
+    }
+
+    async updating(id: any, body: any)  {
+        if (!id) throw Error("Form Payment error");
+        if (!body) throw Error("Form Payment error");
+
+        const { type } = body;
+
+        const formPayment = await prisma.formPayment.update({
+            where: { id },
+            data: { type }
+        });
+
+        if(!formPayment) return false;
+        else return true;
+    }
 }

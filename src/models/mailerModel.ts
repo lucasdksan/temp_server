@@ -2,11 +2,14 @@ import { mailerProspectingTemplate } from './../email/mailerProspectingTemplate'
 import { nodemailerConfig } from './../email/mailerConfig';
 import nodemailer from "nodemailer";
 import { prisma } from '../prisma';
+import { modificationRecordSave } from '../libs/modificationRecordSave';
 
 export default class MailerModel {
-    async sending(id: any) {
-        if(!id) throw Error("Error in Possible Customers search: Possible Customers does not exist");
+    async sending(id: any, user_id: any) {
+        if(!id) throw Error("Error in Mailer search: Mailer does not exist");
+        if(!user_id) throw Error("Error in Mailer search: Mailer does not exist");
         
+        const mod_id = await modificationRecordSave(user_id);
         const transport = nodemailer.createTransport(nodemailerConfig);
         const client = await prisma.possibleCustomers.findFirst({
             where: {
@@ -45,17 +48,14 @@ export default class MailerModel {
             data: {
                 recipient: client.contact_name ? client.contact_name : client.interested,
                 sender: process.env.NODEMAILER_EMAIL as string,
-                theme: "Apresentação"
+                theme: "Apresentação",
+                modification_record_id: mod_id
             }
         });
 
         await prisma.possibleCustomers.update({
-            where: {
-                id: id
-            },
-            data: {
-                send_email: true
-            }
+            where: { id: id },
+            data: { send_email: true }
         });
 
         return true;

@@ -15,7 +15,6 @@ export default class EquipmentsController {
                 return res.status(500).json({ error: "Error in creating equipment" });
             }
         } catch (error) {
-            console.log("Error: ", error);
             return res.status(500).json({ error: error || "Internal Server Error" });
         }
     }
