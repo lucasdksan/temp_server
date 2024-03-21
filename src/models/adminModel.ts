@@ -27,11 +27,9 @@ export default class AdminModel {
         if (!id) throw Error("Possible Customers error");
         if (!body) throw Error("Possible Customers error");
 
-        const { password, ...data } = adminZod.parse(body);
-        
         const admin = await prisma.users.update({
             where: { id },
-            data
+            data: body
         });
         
         if (!admin) return false;
